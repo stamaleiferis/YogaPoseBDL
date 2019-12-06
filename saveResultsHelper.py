@@ -1,12 +1,12 @@
 import os
 
-def save_results(y_pred, samples,trace,CROSS_VAL_DIR_NAME):
+def save_results(y_pred,y_true, samples,trace,CROSS_VAL_DIR_NAME):
     BASE_PATH = os.getcwd()
     #NEW_PATH = 'TODO: descriptive name for current run of cross validation'
     NEW_PATH = os.path.join(BASE_PATH,CROSS_VAL_DIR_NAME) 
     if not os.path.isdir(NEW_PATH): os.mkdir(NEW_PATH)
     save_samples(samples,NEW_PATH)
-    save_predictions(y_pred,NEW_PATH)
+    save_predictions(y_pred,y_true,NEW_PATH)
     save_PE(trace,NEW_PATH)
     
 def save_samples(samples,NEW_PATH):
@@ -27,12 +27,15 @@ def save_samples(samples,NEW_PATH):
             np.savetxt(curr_weights_fname, curr_weights, delimiter=",")
             np.savetxt(curr_biases_fname, curr_biases, delimiter=",")
             
-def save_predictions(y_pred,NEW_PATH):
+def save_predictions(y_pred,y_true,NEW_PATH):
+    #Note: y_pred is list of arrays is just an array
     PRED_PATH = os.path.join(NEW_PATH,'predictions')
     if not os.path.isdir(PRED_PATH): os.mkdir(PRED_PATH)
     for i,prediction_arr in enumerate(y_pred):
         pred_fname = os.path.join(PRED_PATH,'pred_'+str(i)+'.csv')
+        true_fname = os.path.join(PRED_PATH,'true_'+str(i)+'.csv')
         np.savetxt(pred_fname, prediction_arr, delimiter=",")
+        np.savetxt(true_fname, y_true, delimiter=",")
         
 
 def save_PE(trace,NEW_PATH):
