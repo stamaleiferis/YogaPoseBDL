@@ -191,7 +191,7 @@ def hmc_predict(
     )
     print('run_hmc COMPLETE')
     y_pred = predict_from_chain(samples, X_test)
-    return y_pred,trace, final_kernel_results
+    return y_pred,trace, final_kernel_results,samples
 
 
 def nest_concat(*args, axis=0):

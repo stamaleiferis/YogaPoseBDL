@@ -1,4 +1,5 @@
-import os
+import os 
+import numpy as np
 
 def save_results(y_pred,y_true, samples,trace,CROSS_VAL_DIR_NAME):
     BASE_PATH = os.getcwd()
@@ -22,21 +23,20 @@ def save_samples(samples,NEW_PATH):
         for curr_sample_num in range(num_hmc_samples):
             curr_weights = samples[i][curr_sample_num]
             curr_biases = samples[i+1][curr_sample_num]
-            curr_weights_fname = os.path.join(weights_file_path,'weights_layer_'+curr_layer_num+'_sample_'+str(curr_sample_num)+'.csv')
-            curr_biases_fname = os.path.join(biases_file_path,'biases_layer_'+curr_layer_num+'_sample_'+str(curr_sample_num)+'.csv')
-            np.savetxt(curr_weights_fname, curr_weights, delimiter=",")
-            np.savetxt(curr_biases_fname, curr_biases, delimiter=",")
+            curr_weights_fname = os.path.join(weights_file_path,'weights_layer_'+str(curr_layer_num)+'_sample_'+str(curr_sample_num)+'.csv')
+            curr_biases_fname = os.path.join(biases_file_path,'biases_layer_'+str(curr_layer_num)+'_sample_'+str(curr_sample_num)+'.csv')
+            #np.savetxt(curr_weights_fname, curr_weights, delimiter=",")
+            #np.savetxt(curr_biases_fname, curr_biases, delimiter=",")
             
 def save_predictions(y_pred,y_true,NEW_PATH):
-    #Note: y_pred is list of arrays is just an array
+    #Note: y_pred is list of arrays. y_true is array 
     PRED_PATH = os.path.join(NEW_PATH,'predictions')
     if not os.path.isdir(PRED_PATH): os.mkdir(PRED_PATH)
     for i,prediction_arr in enumerate(y_pred):
         pred_fname = os.path.join(PRED_PATH,'pred_'+str(i)+'.csv')
-        true_fname = os.path.join(PRED_PATH,'true_'+str(i)+'.csv')
         np.savetxt(pred_fname, prediction_arr, delimiter=",")
-        np.savetxt(true_fname, y_true, delimiter=",")
-        
+    true_fname = os.path.join(PRED_PATH,'y_true'+'.csv')
+    np.savetxt(true_fname, y_true, delimiter=",")
 
 def save_PE(trace,NEW_PATH):
     fname = os.path.join(NEW_PATH,'negLogProb.csv')
