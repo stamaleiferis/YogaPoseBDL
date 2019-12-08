@@ -14,6 +14,7 @@ def generate(path):
     vec4s = []
     for dir in sorted(os.listdir(path)):
         for filename in sorted(os.listdir(os.path.join(DATA, dir))):
+            print(filename+dir)
             points = extract_points(os.path.join(DATA, dir, filename))
             points = impute_occlusions(points)
             points = select_points(points)
@@ -50,7 +51,7 @@ def impute_occlusions(points):
             points[right[i]] = points[left[i]]
         if np.sum(points[left[i]]) == 0:
             points[left[i]] = points[right[i]] 
-    return points
+        return points
 
 def select_points(points):
     points = points[:15]
@@ -80,6 +81,7 @@ def angles(points):
         angs.append(np.arccos((a*a + c*c - b*b)/(2*a*c)))
         angs.append(np.arccos((b*b + c*c - a*a)/(2*b*c)))
     vec = np.array(angs)
+    vec = np.nan_to_num(vec)
     return vec
 
 generate(DATA)

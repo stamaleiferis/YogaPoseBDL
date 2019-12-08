@@ -54,10 +54,10 @@ def sample_chain(*args, **kwargs):
 
 def run_hmc(
     target_log_prob_fn,
-    step_size,
-    num_leapfrog_steps,
+    step_size = .0001,
+    num_leapfrog_steps = 100,
     num_burnin_steps=1000,
-    num_results=1000,
+    num_results=500,
     current_state=None,
     resume=None,
     log_dir="logs/hmc/",
@@ -172,14 +172,14 @@ def predict_from_chain(chain, X_test, uncertainty="aleatoric+epistemic"):
 
 
 def hmc_predict(
-    weight_prior, bias_prior, init_state, X_train, y_train, X_test, L, e, y_test=None, **kwds
+    weight_prior, bias_prior, init_state, X_train, y_train, X_test, y_test=None, **kwds
 ):
     """Top-level function that ties together run_hmc and predict_from_chain by accepting
     a train and test set plus parameter priors to construct the BNN's log probability
     function given the training data X_train, y_train.
     """
     default = dict(
-        num_results=500, num_burnin_steps=1500, step_size_adapter="dual_averaging"
+        num_results=500, num_burnin_steps=1000, step_size_adapter="dual_averaging"
     )
     kwds = {**default, **kwds}
     bnn_log_prob_fn = bnn_fn.target_log_prob_fn_factory(
@@ -187,7 +187,7 @@ def hmc_predict(
     )
     print('Created log prob fn')
     burnin, samples, trace, final_kernel_results = run_hmc(
-        bnn_log_prob_fn, e, L, current_state=init_state, **kwds
+        bnn_log_prob_fn, current_state=init_state, **kwds
     )
     print('run_hmc COMPLETE')
     y_pred = predict_from_chain(samples, X_test)
