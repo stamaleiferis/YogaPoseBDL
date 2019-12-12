@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix as cm
 import src.bnn.hmc as hmcnn
 import src.bnn.bnn as bnn
 
-Js = [0, 1, 2, 3, 4]
+Js = [1, 2, 3, 4, 5]
 Ks = [10, 20, 30, 40, 50]
 
 # Data Functions
@@ -34,7 +34,7 @@ def split_data(mat, train, val, test):
 # Learn functions
 def accuracy(Y_true, Y_pred):
     cm_mean, cm_std = eval(Y_true, Y_pred)
-    return np.trace(cm_mean) / np.sum(cm_mean), np.trace(cm_std) / np.sum(cm_std)
+    return np.trace(cm_mean) / np.sum(cm_mean), np.trace(cm_std) / np.sum(cm_mean)
 
 def eval(Y_true, Y_pred):
     cms = []

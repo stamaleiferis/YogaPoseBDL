@@ -54,10 +54,10 @@ def sample_chain(*args, **kwargs):
 
 def run_hmc(
     target_log_prob_fn,
-    step_size = .0001,
-    num_leapfrog_steps = 100,
-    num_burnin_steps=1000,
-    num_results=500,
+    step_size=.0001,
+    num_leapfrog_steps=1000,
+    num_burnin_steps=500,
+    num_results=100,
     current_state=None,
     resume=None,
     log_dir="logs/hmc/",
@@ -179,7 +179,7 @@ def hmc_predict(
     function given the training data X_train, y_train.
     """
     default = dict(
-        num_results=500, num_burnin_steps=1000, step_size_adapter="dual_averaging"
+        step_size_adapter="dual_averaging"
     )
     kwds = {**default, **kwds}
     bnn_log_prob_fn = bnn_fn.target_log_prob_fn_factory(
