@@ -55,7 +55,7 @@ def sample_chain(*args, **kwargs):
 def run_hmc(
     target_log_prob_fn,
     step_size=.0001,
-    num_leapfrog_steps=1000,
+    num_leapfrog_steps=100,
     num_burnin_steps=500,
     num_results=100,
     current_state=None,
